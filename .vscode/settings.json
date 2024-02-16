@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "iostream": "cpp",
+    "*.inc": "cpp"
+  },
+  "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
+  "clangd.arguments": [],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#5A0B34",
+    "titleBar.activeBackground": "#7E0F48",
+    "titleBar.activeForeground": "#FFFCFD"
+  }
+}
