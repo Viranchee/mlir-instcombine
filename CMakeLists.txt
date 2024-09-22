@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_C_COMPILER /opt/homebrew/opt/llvm/bin/clang)
 set(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project("pass")
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
 
+find_package(LLVM REQUIRED CONFIG)
 find_package(MLIR REQUIRED CONFIG)
 
 message(STATUS "Using MLIRConfig.cmake in: ${MLIR_DIR}")
@@ -38,45 +40,34 @@ get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
 get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 
 llvm_map_components_to_libnames(llvm_libs analysis bitreader bitwriter codegen core asmparser irreader instcombine instrumentation mc objcarcopts scalaropts support ipo target transformutils vectorize)
-# # target_link_libraries(Pass 
-# #     PRIVATE
-# #     MLIRAnalysis
-# #     MLIRCallInterfaces
-# #     MLIRCastInterfaces
-# #     MLIRExecutionEngine
-# #     MLIRIR
-# #     MLIRLLVMCommonConversion
-# #     MLIRLLVMIR
-# #     MLIRLLVMToLLVMIRTranslation
-# #     MLIRMemRef
-# #     MLIRParser
-# #     MLIRPass
-# #     MLIRSideEffectInterfaces
-# #     MLIRSupport
-# #     MLIRTargetLLVMIRExport
-# #     MLIRTransforms
-# #     )
 
-# set(MLIR_COMPONENTS
-#     LLVMLinker
-#     MLIR_LIBS
-#     MLIRAffine
-#     MLIRAnalysis
-#     MLIRExecutionEngine
-#     MLIRIR
-#     MLIROptLib 
-#     MLIRParser
-#     MLIRQuantum 
-#     MLIRStandard
-#     MLIRSupport
-#     MLIRTargetLLVMIR
-#     MLIRTransformUtils
-# )
+set(MLIR_COMPONENTS
+    LLVMLinker
+    MLIR_LIBS
+    MLIRAffine
+    MLIRAnalysis
+    MLIRExecutionEngine
+    MLIRIR
+    MLIROptLib 
+    MLIRParser
+    MLIRQuantum 
+    MLIRStandard
+    MLIRSupport
+    MLIRTargetLLVMIR
+    MLIRTransformUtils
+)
 
-# foreach(component ${MLIR_COMPONENTS})
-#   list(APPEND MLIR_LIBS "MLIR${component}")
-# endforeach()
+foreach(component ${MLIR_COMPONENTS})
+  list(APPEND MLIR_LIBS "MLIR${component}")
+endforeach()
+
+add_subdirectory(instcombine)
 
 
-add_subdirectory(pass)
 
+# enable_testing()
+# add_test(NAME Usage COMMAND p2 -h)
+# set_tests_properties(Usage
+#         PROPERTIES PASS_REGULAR_EXPRESSION "USAGE:"
+#         )
+# add_subdirectory(tests)

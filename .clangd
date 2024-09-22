@@ -1,0 +1,7 @@
+{
+  "missingIncludes": {
+    "diag": "error",
+    "parse": true,
+    "suggest": ["path/to/headers"]
+  }
+}
